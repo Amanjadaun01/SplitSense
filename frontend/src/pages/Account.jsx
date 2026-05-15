@@ -305,7 +305,7 @@ export default function Account() {
       {/* Footer Element */}
       <footer className="mt-auto py-8 text-center text-sm font-medium text-gray-400">
         <p className="flex items-center justify-center gap-1.5">
-          Made with <Heart size={16} className="fill-rose-500 text-rose-500 animate-pulse" /> by <span className="font-bold text-gray-600">Vishal Pal</span>
+          Made with <Heart size={16} className="fill-rose-500 text-rose-500 animate-pulse" /> by <span className="font-bold text-gray-600">Aman Jadaun</span>
         </p>
         <p className="mt-1">© {new Date().getFullYear()} All rights reserved.</p>
       </footer>

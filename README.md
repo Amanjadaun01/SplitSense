@@ -38,7 +38,7 @@ Make sure you have Node.js and MongoDB installed on your machine. You will also 
 
 ### 2. Clone the Repository
 \`\`\`bash
-git clone https://github.com/Vishal895491/ExpenseAI.git
+git clone https://github.com/Amanjadaun01/SplitSense.git
 cd splitsense
 \`\`\`
 
@@ -87,4 +87,4 @@ npm run dev
 * Automated email notifications for pending debts.
 
 ---
-*Designed and engineered by Vishal Pal.*
+*Designed and engineered by Aman Jadaun.*
