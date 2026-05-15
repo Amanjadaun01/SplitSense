@@ -7,7 +7,19 @@ import Groups from './pages/Groups';
 import GroupDetails from './pages/GroupDetails';
 import Account from './pages/Account';
 import { useThemeStore } from './store/useThemeStore';
+import { useAuthStore } from './store/useAuthStore';
 import { useEffect } from 'react';
+
+// Protected Route Component
+function ProtectedRoute({ element }) {
+  const user = useAuthStore((state) => state.user);
+  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return element;
+}
 
 function App() {
   const { isDarkMode } = useThemeStore();
@@ -26,14 +38,16 @@ function App() {
       {/* We use standard Tailwind classes for a full-screen, clean background */}
       <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
         <Routes>
-          {/* Define our specific routes */}
+          {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/friends" element={<Friends />} />
-          <Route path="/groups" element={<Groups />} />
-          <Route path="/groups/:id" element={<GroupDetails />} />
-          <Route path="/account" element={<Account />} />
+          
+          {/* Protected Routes - User must be logged in to access */}
+          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+          <Route path="/friends" element={<ProtectedRoute element={<Friends />} />} />
+          <Route path="/groups" element={<ProtectedRoute element={<Groups />} />} />
+          <Route path="/groups/:id" element={<ProtectedRoute element={<GroupDetails />} />} />
+          <Route path="/account" element={<ProtectedRoute element={<Account />} />} />
           
           {/* Catch-all: If a user visits an unknown URL, send them to login */}
           <Route path="*" element={<Navigate to="/login" replace />} />

@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 export default function Account() {
-  const { user, setLogout } = useAuthStore();
+  const { user, setLogout, setLogin } = useAuthStore();
   const navigate = useNavigate();
   
   const [activeTab, setActiveTab] = useState('profile');
@@ -39,18 +39,16 @@ export default function Account() {
     e.preventDefault();
     setLoading(true);
     try {
-      // Hit our new backend route!
       const response = await API.put('/users/profile', {
         name: formData.name,
         email: formData.email
       });
       
-      setMessage('Profile updated successfully! (Refresh to see changes globally)');
+      setMessage('Profile updated successfully!');
       setIsEditing(false);
-      
-      // Note: Ideally you update the useAuthStore state here too!
+      setLogin(response.data);
     } catch (error) {
-      setMessage('Failed to update profile.');
+      setMessage(error.response?.data?.message || 'Failed to update profile.');
     } finally {
       setLoading(false);
     }

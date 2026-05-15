@@ -5,7 +5,7 @@ import { useAuthStore } from '../store/useAuthStore';
 
 export default function Register() {
   const navigate = useNavigate();
-  const setAuthUser = (userData) => useAuthStore.setState({ user: userData });
+  const setLogin = useAuthStore((state) => state.setLogin);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -53,10 +53,24 @@ export default function Register() {
         password: formData.password,
       });
       
-      setAuthUser(response.data);
+      console.log('Registration successful:', response.data);
+      setLogin(response.data);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create account. Please try again.');
+      console.error('Registration error:', err);
+      
+      // Provide specific error messages based on error type
+      let errorMessage = 'Failed to create account. Please try again.';
+      
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err.request && !err.response) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (err.message === 'timeout of 10000ms exceeded') {
+        errorMessage = 'Request timed out. Please try again.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

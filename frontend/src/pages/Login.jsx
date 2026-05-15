@@ -14,18 +14,32 @@ export default function Login() {
     try {
       setServerError(''); // Clear previous errors
       // Send the POST request to our backend
-      const response = await API.post("/api/users/login", {
+      const response = await API.post('/users/login', {
         email: data.email,
         password: data.password,
       });
 
+      console.log('Login successful:', response.data);
+      
       // If successful, save the user data to Zustand & LocalStorage
       setLogin(response.data);
       
       // Redirect to the Dashboard
       navigate('/dashboard');
     } catch (error) {
-      setServerError(error.response?.data?.message || 'Failed to login');
+      console.error('Login error:', error);
+      
+      let errorMessage = 'Failed to login';
+      
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.request && !error.response) {
+        errorMessage = 'Network error. Please check your connection.';
+      } else if (error.message === 'timeout of 10000ms exceeded') {
+        errorMessage = 'Request timed out. Please try again.';
+      }
+      
+      setServerError(errorMessage);
     }
   };
 
